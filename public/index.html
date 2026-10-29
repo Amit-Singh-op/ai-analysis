@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Analyst</title>
+  <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <h1>Fleet Analyst</h1>
+      <button type="button" id="new-chat" class="ghost">New chat</button>
+    </header>
+
+    <main id="messages" class="messages">
+      <section id="welcome" class="welcome">
+        <h2>Ask about your devices and shipments</h2>
+        <div class="suggestions">
+          <button type="button">Are there any problems right now?</button>
+          <button type="button">Is shipment 1001 OK?</button>
+          <button type="button">Which devices have low battery?</button>
+          <button type="button">Temperature of shipment 1002 per hour today</button>
+          <button type="button">Which routes had the most alerts this week?</button>
+          <button type="button">Shipments in transit to Singapore</button>
+        </div>
+      </section>
+    </main>
+
+    <form id="chat-form" class="composer">
+      <textarea id="prompt" rows="1" placeholder="Ask a question…" maxlength="2000" autofocus></textarea>
+      <button type="submit" id="send" aria-label="Send">➤</button>
+    </form>
+  </div>
+  <script src="app.js?v=5"></script>
+</body>
+</html>

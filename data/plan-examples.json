@@ -1,0 +1,18 @@
+[
+  {
+    "question": "which shipments is it on",
+    "previousQuestion": "is DEV-004 working",
+    "plan": {
+      "task": "list_shipments",
+      "metric": "none",
+      "agg": "none",
+      "by": "none",
+      "window": "all",
+      "devices": [
+        "DEV-004"
+      ]
+    },
+    "note": "list every shipment the device is on, do not filter by status",
+    "ts": "2026-10-29T05:55:57.608Z"
+  }
+]

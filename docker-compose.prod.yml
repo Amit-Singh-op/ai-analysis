@@ -1,0 +1,47 @@
+# Production stack for a single EC2 instance:
+#   docker compose -f docker-compose.prod.yml up -d --build
+# Postgres and Ollama are only reachable inside the Docker network; only the app port is published.
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-analyst_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?set POSTGRES_ADMIN_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-telemetry_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER:-analyst_admin} -d ${POSTGRES_DB:-telemetry_db}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      DATABASE_RO_URL: postgresql://analyst_ro:${ANALYST_RO_PASSWORD:?set ANALYST_RO_PASSWORD in .env}@postgres:5432/${POSTGRES_DB:-telemetry_db}
+      DATABASE_ADMIN_URL: postgresql://${POSTGRES_ADMIN_USER:-analyst_admin}:${POSTGRES_ADMIN_PASSWORD}@postgres:5432/${POSTGRES_DB:-telemetry_db}
+      OLLAMA_BASE_URL: http://ollama:11434
+      PLANNER_MODEL: ${PLANNER_MODEL:-llama3.2:3b}
+    volumes:
+      - ./logs:/app/logs   # question log (used by npm run fix) survives rebuilds
+      - ./data:/app/data   # plan-examples.json: corrections saved from "Not right?"
+
+volumes:
+  pgdata:
+  ollama:

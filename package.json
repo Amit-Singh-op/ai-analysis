@@ -1,0 +1,47 @@
+{
+  "name": "local-ai-analyst",
+  "version": "1.0.0",
+  "description": "Local-first AI Data Analyst proof-of-concept over device and shipment telemetry",
+  "type": "module",
+  "main": "dist/src/server.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/src/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:check": "tsx scripts/check-db.ts",
+    "db:create": "tsx scripts/create-db.ts",
+    "db:schema": "tsx scripts/apply-schema.ts",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "query": "tsx scripts/query.ts",
+    "fix": "tsx scripts/fix.ts",
+    "db:tenants": "tsx scripts/demo-tenants.ts"
+  },
+  "keywords": [
+    "local-ai",
+    "telemetry",
+    "ollama",
+    "analytics",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.13.5",
+    "@types/pg": "^8.11.11",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.7"
+  }
+}

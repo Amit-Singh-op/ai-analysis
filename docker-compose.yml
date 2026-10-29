@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: local-ai-analyst-postgres
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_ADMIN_USER:-analyst_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:-analyst_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-telemetry_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ADMIN_USER:-analyst_admin} -d ${POSTGRES_DB:-telemetry_db}"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  pgdata:
